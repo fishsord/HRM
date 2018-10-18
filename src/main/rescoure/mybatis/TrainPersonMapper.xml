@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr_mapper.TrainPersonMapper">
+  <resultMap id="BaseResultMap" type="com.hr_pojo.TrainPerson">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="trainId" jdbcType="INTEGER" property="trainid" />
+    <result column="isTong" jdbcType="VARCHAR" property="istong" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, trainId, isTong
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from train_person
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from train_person
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hr_pojo.TrainPerson">
+    insert into train_person (id, name, trainId, 
+      isTong)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{trainid,jdbcType=INTEGER}, 
+      #{istong,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hr_pojo.TrainPerson">
+    insert into train_person
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="trainid != null">
+        trainId,
+      </if>
+      <if test="istong != null">
+        isTong,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="trainid != null">
+        #{trainid,jdbcType=INTEGER},
+      </if>
+      <if test="istong != null">
+        #{istong,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hr_pojo.TrainPerson">
+    update train_person
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="trainid != null">
+        trainId = #{trainid,jdbcType=INTEGER},
+      </if>
+      <if test="istong != null">
+        isTong = #{istong,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hr_pojo.TrainPerson">
+    update train_person
+    set name = #{name,jdbcType=VARCHAR},
+      trainId = #{trainid,jdbcType=INTEGER},
+      isTong = #{istong,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		from train_person
+	</select>
+	
+	<select id="selectTrainPersonByPage" resultType="TrainPerson" parameterType="TrainPerson">
+select p.trainId trainid,p.id id,p.name name,p.isTong istong, t.type as type from train_person p, train_type t where p.trainId = t.id  ORDER BY  ${orderByColName} ${orderMethod} limit #{start},#{row}
+	</select>
+	<select id="selectCount" resultType="int">
+		select count(*) from train_person  
+	</select>
+	<delete id="deleteTrainPersonByPage" parameterType="int">
+	   delete  from train_person where id = #{id}
+	</delete>
+	<insert id="addTrainPersonByPage"  parameterType="TrainPerson">
+	   insert into train_person(name,trainId,isTong) values (#{name},#{trainid},#{istong})
+	</insert>
+	<update id="updateTrainPersonByPage" parameterType="TrainPerson">
+	    update train_person set name=#{name},trainId = #{trainid},isTong = #{istong}  where id = #{id}
+	</update> 
+</mapper>

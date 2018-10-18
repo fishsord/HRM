@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr_mapper.yingPinMapper">
+  <resultMap id="BaseResultMap" type="com.hr_pojo.yingPin">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="brdate" jdbcType="DATE" property="brdate" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="emil" jdbcType="VARCHAR" property="emil" />
+    <result column="Recruitment" jdbcType="VARCHAR" property="recruitment" />
+    <result column="zhiwei" jdbcType="VARCHAR" property="zhiwei" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, sex, brdate, tel, emil, Recruitment, zhiwei
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yingpin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查询所有记录 -->
+   <select id="selectRecord" parameterType="com.hr_pojo.yingPin" resultType="yingPin">
+    select 
+    <include refid="Base_Column_List" />
+    from yingpin
+  </select>
+  <!-- end -->
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from yingpin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.hr_pojo.yingPin">
+    insert into yingpin (id, name, sex, brdate, 
+      tel, emil, Recruitment ,zhiwei
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{brdate,jdbcType=DATE}, 
+      #{tel,jdbcType=VARCHAR}, #{emil,jdbcType=VARCHAR}, #{recruitment,jdbcType=VARCHAR},#{zhiwei,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.hr_pojo.yingPin">
+    insert into yingpin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="brdate != null">
+        brdate,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="emil != null">
+        emil,
+      </if>
+      <if test="recruitment != null">
+        Recruitment,
+      </if>
+      <if test="zhiwei != null">
+        zhiwei,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="brdate != null">
+        #{brdate,jdbcType=DATE},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="emil != null">
+        #{emil,jdbcType=VARCHAR},
+      </if>
+      <if test="recruitment != null">
+        #{recruitment,jdbcType=VARCHAR},
+      </if>
+      <if test="zhiwei != null">
+        #{zhiwei,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.hr_pojo.yingPin">
+    update yingpin
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="brdate != null">
+        brdate = #{brdate,jdbcType=DATE},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="emil != null">
+        emil = #{emil,jdbcType=VARCHAR},
+      </if>
+      <if test="recruitment != null">
+        Recruitment = #{recruitment,jdbcType=VARCHAR},
+      </if>
+      <if test="zhiwei != null">
+        zhiwei = #{zhiwei,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.hr_pojo.yingPin">
+    update yingpin
+    set name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=CHAR},
+      brdate = #{brdate,jdbcType=DATE},
+      tel = #{tel,jdbcType=VARCHAR},
+      emil = #{emil,jdbcType=VARCHAR},
+      Recruitment = #{recruitment,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

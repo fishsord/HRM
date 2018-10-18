@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr_mapper.personExchangeMapper">
+  <resultMap id="BaseResultMap" type="com.hr_pojo.personExchange">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="userd" jdbcType="VARCHAR" property="userd" />
+    <result column="news" jdbcType="VARCHAR" property="news" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="reasonr" jdbcType="VARCHAR" property="reasonr" />
+    <association property="user" javaType="com.hr_pojo.User">
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, userd, news, date, reasonr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from person_exchange
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from person_exchange
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hr_pojo.personExchange">
+    insert into person_exchange ( userId, userd, 
+      news, date, reasonr)
+    values (#{userid,jdbcType=INTEGER}, #{userd,jdbcType=VARCHAR}, 
+      #{news,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{reasonr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hr_pojo.personExchange">
+    insert into person_exchange
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="userd != null">
+        userd,
+      </if>
+      <if test="news != null">
+        news,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="reasonr != null">
+        reasonr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="userd != null">
+        #{userd,jdbcType=VARCHAR},
+      </if>
+      <if test="news != null">
+        #{news,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="reasonr != null">
+        #{reasonr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hr_pojo.personExchange">
+    update person_exchange
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="userd != null">
+        userd = #{userd,jdbcType=VARCHAR},
+      </if>
+      <if test="news != null">
+        news = #{news,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="reasonr != null">
+        reasonr = #{reasonr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hr_pojo.personExchange">
+    update person_exchange
+    set userId = #{userid,jdbcType=INTEGER},
+      userd = #{userd,jdbcType=VARCHAR},
+      news = #{news,jdbcType=VARCHAR},
+      date = #{date,jdbcType=DATE},
+      reasonr = #{reasonr,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- person_exchange和user 双表查询 -->
+ 	<select id="selectExchangUser"  resultMap="BaseResultMap">
+ 		SELECT person_exchange.userId userid,person_exchange.id, user.username,person_exchange.userd,person_exchange.news,person_exchange.date,person_exchange.reasonr
+ 		FROM person_exchange join user on person_exchange.userId=user.id
+ 	</select>
+ 	
+ 	
+</mapper>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr_Dao.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.hr_pojo.Message">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="emil" jdbcType="VARCHAR" property="emil" />
+    <result column="bumen" jdbcType="VARCHAR" property="bumen" />
+    <result column="zhiwu" jdbcType="VARCHAR" property="zhiwu" />
+    <result column="ruzhiDate" jdbcType="DATE" property="ruzhidate" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="b_id" jdbcType="INTEGER" property="bid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="u_shen" jdbcType="VARCHAR" property="shen" />
+    <result column="b_name" jdbcType="VARCHAR" property="b_name" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="h_id" jdbcType="VARCHAR" property="hid" />
+    
+    <result column="danganxueli" jdbcType="VARCHAR" property="danganxueli" />
+    <result column="danganhomeaddress" jdbcType="VARCHAR" property="danganhomeaddress" />
+    <result column="danganschool" jdbcType="VARCHAR" property="danganschool" />
+    <result column="danganprofession" jdbcType="VARCHAR" property="danganprofession" />
+    <result column="danganjiguan" jdbcType="VARCHAR" property="danganjiguan" />
+    <result column="danganminzu" jdbcType="VARCHAR" property="danganminzu" />
+    <result column="danganpolitical" jdbcType="VARCHAR" property="danganpolitical" />
+          <result column="danganid" jdbcType="INTEGER" property="danganid" />
+              <result column="hetongid" jdbcType="INTEGER" property="hetongid" />
+       
+              
+     <association property="dangan" javaType="com.hr_pojo.Dangan">
+         <result column="d_id" jdbcType="VARCHAR" property="did" />
+    <result column="dname" jdbcType="VARCHAR" property="dname" />
+    <result column="xueli" jdbcType="VARCHAR" property="xueli" />
+    <result column="homeaddress" jdbcType="VARCHAR" property="homeaddress" />
+    <result column="school" jdbcType="VARCHAR" property="school" />
+    <result column="profession" jdbcType="VARCHAR" property="profession" />
+    <result column="jiguan" jdbcType="VARCHAR" property="jiguan" />
+    <result column="minzu" jdbcType="VARCHAR" property="minzu" />
+    <result column="political" jdbcType="VARCHAR" property="political" />
+    <result column="neirong" jdbcType="VARCHAR" property="neirong" />
+    <result column="beizhu" jdbcType="VARCHAR" property="beizhu" />
+    </association>
+    
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sex, date, tel, emil, bumen, zhiwu, ruzhiDate, userId, name
+  </sql>
+  <!-- 人员信息的修改 -->
+  <update id="updateByPrimaryKey" parameterType="com.hr_pojo.Message">
+    
+  update message set message.name=#{name}, message.sex=#{sex},message.date=#{date},
+  message.tel=#{tel},message.emil=#{emil},message.ruzhiDate=#{ruzhidate},
+  message.zhiwu=(select u.u_id from userAdmin u where u.u_shen=#{shen}),
+  message.bumen=(select b.b_id from bumen b where b.b_name=#{b_name}) where message.id=#{id}
+
+  </update>
+  <update id="updateByStaff" parameterType="com.hr_pojo.Message">
+  
+  update dangan d set d.xueli=#{danganxueli},d.homeaddress=#{danganhomeaddress},d.school=#{danganschool},
+  d.profession=#{danganprofession},d.jiguan=#{danganjiguan},d.minzu=#{danganminzu},d.political=#{danganpolitical}
+  where d.userId=(select m.userId from message m where m.id=#{id})
+  </update>
+  <!-- 查询人员档案 -->
+  <select id="selectDanganByPage" resultMap="BaseResultMap">
+  SELECT m.id,d.d_id,h.h_id,d.dname,m.ruzhiDate,d.neirong,d.beizhu FROM dangan d,
+   message m, hetong h where d.userId=m.userId and m.userId=h.userId and m.bumen=#{bid}
+   ORDER BY  ${orderByColName} ${orderMethod} limit #{start},#{rows}
+  
+  </select>
+  <update id="updateByDangan" >
+  
+  update dangan set neirong=#{danganneirong},beizhu=#{danganbeizhu} where d_id=#{danganid}
+  
+  </update>
+  <delete id="deleteByDangan" >
+  update dangan set neirong='',beizhu='' where userId=(select m.userId from message m where m.id=#{id})
+  </delete>
+ 
+   <!-- 员工详细信息查询 -->
+  <select id="StaffAll"  resultMap="BaseResultMap">
+  select m.id,m.name,m.sex,d.jiguan,d.minzu,d.political,d.xueli,b.b_name,b.b_id,
+  u.u_shen,e.status,m.ruzhiDate,m.tel,m.emil,d.school,m.date,d.profession,d.homeaddress
+  from message m, dangan d, bumen b ,employee_status e ,userAdmin u
+  where m.userId = d.userId and m.bumen = b.b_id
+  and m.zhiwu = u.u_id and e.id = u.u_eId and m.id = #{id}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 联立删除一系列的员工信息 -->
+   <delete id="deleteByHetong" parameterType="java.lang.Integer">
+  delete from hetong where h_id=#{hetongid}
+  </delete>
+  <delete id="deleteById" parameterType="java.lang.Integer">
+  delete from dangan where d_id=#{danganid}
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <!-- 对员工信息删除操作我擦 -->
+  <insert id="insert" parameterType="com.hr_pojo.Message">
+    insert into message (id, sex, date, tel, 
+      emil, bumen, zhiwu, 
+      ruzhiDate, userId, name
+      )
+    values (#{id,jdbcType=INTEGER}, #{sex,jdbcType=CHAR}, #{date,jdbcType=DATE}, #{tel,jdbcType=VARCHAR}, 
+      #{emil,jdbcType=VARCHAR}, #{bumen,jdbcType=VARCHAR}, #{zhiwu,jdbcType=VARCHAR}, 
+      #{ruzhidate,jdbcType=DATE}, #{userid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hr_pojo.Message">
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="emil != null">
+        emil,
+      </if>
+      <if test="bumen != null">
+        bumen,
+      </if>
+      <if test="zhiwu != null">
+        zhiwu,
+      </if>
+      <if test="ruzhidate != null">
+        ruzhiDate,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="emil != null">
+        #{emil,jdbcType=VARCHAR},
+      </if>
+      <if test="bumen != null">
+        #{bumen,jdbcType=VARCHAR},
+      </if>
+      <if test="zhiwu != null">
+        #{zhiwu,jdbcType=VARCHAR},
+      </if>
+      <if test="ruzhidate != null">
+        #{ruzhidate,jdbcType=DATE},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hr_pojo.Message">
+    update message
+    <set>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="emil != null">
+        emil = #{emil,jdbcType=VARCHAR},
+      </if>
+      <if test="bumen != null">
+        bumen = #{bumen,jdbcType=VARCHAR},
+      </if>
+      <if test="zhiwu != null">
+        zhiwu = #{zhiwu,jdbcType=VARCHAR},
+      </if>
+      <if test="ruzhidate != null">
+        ruzhiDate = #{ruzhidate,jdbcType=DATE},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+  <!-- 分页查询 -->
+  <select id="selectStudentByPage" resultType="Message" parameterType="com.hr_pojo.Message">
+  select 
+  m.id id,m.name name,m.userId userid,m.sex sex,u.u_shen shen,m.tel tel
+  from message m, userAdmin u where m.zhiwu = u.u_id
+  and m.bumen = ${bid} ORDER BY  ${orderByColName} ${orderMethod} limit #{start},#{rows}
+  </select>
+  
+  <select id="Selectcount" resultType="java.lang.Integer">
+  <!-- 数据总数查询 -->
+  select count(*) 
+  from message
+  </select>
+</mapper>

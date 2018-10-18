@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr_mapper.XincouMapper">
+  <select id="selectXincouByPage" resultType="Xincou" parameterType="Xincou">
+	SELECT * FROM xincou ORDER BY  ${orderByColName} ${orderMethod} limit #{start},#{row}
+	</select>
+	<select id="selectCount" resultType="int">
+		select count(*) from xincou  
+	</select>
+	<select id="selectJb" resultType="float">
+	    select userAdmin.u_price from xincou,userAdmin where xincou.userId=userAdmin.u_id and xincou.userId=${userid};
+	</select>
+	<select id="selectuserid" resultType="Xincou">
+	   SELECT user.id  userid FROM user
+	</select>
+	<select id="selectPrice" resultType="Float" parameterType="int"><!-- 基本工资及奖罚金额 -->
+	  select u.u_price from user x,userAdmin u where x.userAdminId = u.u_id and x.id=#{userid}
+	</select><!-- 删除 -->
+	
+
+	<delete id="deleteXincouByPage" parameterType="int">
+	delete  from xincou where id = #{id}
+	</delete><!-- 修改 -->
+	<update id="updateXincouByPage"  parameterType="Xincou">
+	    update xincou set userId=#{userid},jiben = #{jiben},reward = #{reward},price = #{price}  where id = #{id}
+	</update> 
+	
+	<update id="updateXincouByPage1"  parameterType="Xincou">
+	    update xincou set jiben = #{jiben},reward = #{reward},price = #{price}  where userId = #{userid}
+	</update> 
+	
+</mapper>

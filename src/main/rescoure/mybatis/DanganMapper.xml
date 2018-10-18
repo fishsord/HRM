@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr_Dao.DanganMapper">
+  <resultMap id="BaseResultMap" type="com.hr_pojo.Dangan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="dname" jdbcType="VARCHAR" property="dname" />
+    <result column="beizhu" jdbcType="VARCHAR" property="beizhu" />
+    <result column="xueli" jdbcType="VARCHAR" property="xueli" />
+    <result column="homeaddress" jdbcType="VARCHAR" property="homeaddress" />
+    <result column="school" jdbcType="VARCHAR" property="school" />
+    <result column="profession" jdbcType="VARCHAR" property="profession" />
+    <result column="jiguan" jdbcType="VARCHAR" property="jiguan" />
+    <result column="minzu" jdbcType="VARCHAR" property="minzu" />
+    <result column="political" jdbcType="VARCHAR" property="political" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hr_pojo.Dangan">
+    <result column="neirong" jdbcType="LONGVARCHAR" property="neirong" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, dname, beizhu, xueli, homeaddress, school, profession, jiguan, minzu, 
+    political
+  </sql>
+  <sql id="Blob_Column_List">
+    neirong
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dangan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dangan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hr_pojo.Dangan">
+    insert into dangan (id, userId, dname, 
+      beizhu, xueli, homeaddress, 
+      school, profession, jiguan, 
+      minzu, political, neirong
+      )
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{dname,jdbcType=VARCHAR}, 
+      #{beizhu,jdbcType=VARCHAR}, #{xueli,jdbcType=VARCHAR}, #{homeaddress,jdbcType=VARCHAR}, 
+      #{school,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR}, #{jiguan,jdbcType=VARCHAR}, 
+      #{minzu,jdbcType=VARCHAR}, #{political,jdbcType=VARCHAR}, #{neirong,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hr_pojo.Dangan">
+    insert into dangan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="dname != null">
+        dname,
+      </if>
+      <if test="beizhu != null">
+        beizhu,
+      </if>
+      <if test="xueli != null">
+        xueli,
+      </if>
+      <if test="homeaddress != null">
+        homeaddress,
+      </if>
+      <if test="school != null">
+        school,
+      </if>
+      <if test="profession != null">
+        profession,
+      </if>
+      <if test="jiguan != null">
+        jiguan,
+      </if>
+      <if test="minzu != null">
+        minzu,
+      </if>
+      <if test="political != null">
+        political,
+      </if>
+      <if test="neirong != null">
+        neirong,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="dname != null">
+        #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null">
+        #{beizhu,jdbcType=VARCHAR},
+      </if>
+      <if test="xueli != null">
+        #{xueli,jdbcType=VARCHAR},
+      </if>
+      <if test="homeaddress != null">
+        #{homeaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="profession != null">
+        #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="jiguan != null">
+        #{jiguan,jdbcType=VARCHAR},
+      </if>
+      <if test="minzu != null">
+        #{minzu,jdbcType=VARCHAR},
+      </if>
+      <if test="political != null">
+        #{political,jdbcType=VARCHAR},
+      </if>
+      <if test="neirong != null">
+        #{neirong,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hr_pojo.Dangan">
+    update dangan
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="dname != null">
+        dname = #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null">
+        beizhu = #{beizhu,jdbcType=VARCHAR},
+      </if>
+      <if test="xueli != null">
+        xueli = #{xueli,jdbcType=VARCHAR},
+      </if>
+      <if test="homeaddress != null">
+        homeaddress = #{homeaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="profession != null">
+        profession = #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="jiguan != null">
+        jiguan = #{jiguan,jdbcType=VARCHAR},
+      </if>
+      <if test="minzu != null">
+        minzu = #{minzu,jdbcType=VARCHAR},
+      </if>
+      <if test="political != null">
+        political = #{political,jdbcType=VARCHAR},
+      </if>
+      <if test="neirong != null">
+        neirong = #{neirong,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hr_pojo.Dangan">
+    update dangan
+    set userId = #{userid,jdbcType=INTEGER},
+      dname = #{dname,jdbcType=VARCHAR},
+      beizhu = #{beizhu,jdbcType=VARCHAR},
+      xueli = #{xueli,jdbcType=VARCHAR},
+      homeaddress = #{homeaddress,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      profession = #{profession,jdbcType=VARCHAR},
+      jiguan = #{jiguan,jdbcType=VARCHAR},
+      minzu = #{minzu,jdbcType=VARCHAR},
+      political = #{political,jdbcType=VARCHAR},
+      neirong = #{neirong,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hr_pojo.Dangan">
+    update dangan
+    set userId = #{userid,jdbcType=INTEGER},
+      dname = #{dname,jdbcType=VARCHAR},
+      beizhu = #{beizhu,jdbcType=VARCHAR},
+      xueli = #{xueli,jdbcType=VARCHAR},
+      homeaddress = #{homeaddress,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      profession = #{profession,jdbcType=VARCHAR},
+      jiguan = #{jiguan,jdbcType=VARCHAR},
+      minzu = #{minzu,jdbcType=VARCHAR},
+      political = #{political,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

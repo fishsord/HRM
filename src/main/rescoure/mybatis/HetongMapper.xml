@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr_Dao.HetongMapper">
+  <resultMap id="BaseResultMap" type="com.hr_pojo.Hetong">
+    <id column="h_id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="startDate" jdbcType="DATE" property="startdate" />
+    <result column="endDate" jdbcType="DATE" property="enddate" />
+    <result column="zhiwu" jdbcType="INTEGER" property="zhiwu" />
+    <result column="u_shen" jdbcType="INTEGER" property="shen" />
+    <result column="name" jdbcType="INTEGER" property="name" />
+    
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hr_pojo.Hetong">
+    <result column="hetongnei" jdbcType="LONGVARCHAR" property="hetongnei" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, startDate, endDate, zhiwu
+  </sql>
+   <select id="Selectcount" resultType="java.lang.Integer">
+    <!-- 数据总数查询 -->
+  select count(*) 
+  from message
+  </select>
+  
+  <!-- 对合同进行操作 -->
+  <select id="selectHetong" resultMap="ResultMapWithBLOBs">
+   SELECT h.h_id,h.userId,m.name,h.startDate,h.endDate,u.u_shen,h.hetongnei
+    FROM message m,hetong h,userAdmin u where m.userId=h.userId
+     and u.u_id=m.zhiwu and m.bumen=#{bid}
+   
+  </select>
+   <delete id="deleteByHetong"  parameterType="java.lang.Integer">
+  update hetong set startDate='1111-11-11',endDate='1111-11-11',zhiwu='0',
+  hetongnei='' where userId=#{userid}
+  </delete>
+  <update id="updateByHetong"  parameterType="com.hr_pojo.Hetong">
+  update hetong set startDate=#{startdate},endDate=#{enddate},
+  hetongnei=#{hetongnei} where h_id=#{id}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    from hetong
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hetong
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hr_pojo.Hetong">
+    insert into hetong (id, userId, startDate, 
+      endDate, zhiwu, hetongnei
+      )
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{startdate,jdbcType=DATE}, 
+      #{enddate,jdbcType=DATE}, #{zhiwu,jdbcType=INTEGER}, #{hetongnei,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hr_pojo.Hetong">
+    insert into hetong
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="startdate != null">
+        startDate,
+      </if>
+      <if test="enddate != null">
+        endDate,
+      </if>
+      <if test="zhiwu != null">
+        zhiwu,
+      </if>
+      <if test="hetongnei != null">
+        hetongnei,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="startdate != null">
+        #{startdate,jdbcType=DATE},
+      </if>
+      <if test="enddate != null">
+        #{enddate,jdbcType=DATE},
+      </if>
+      <if test="zhiwu != null">
+        #{zhiwu,jdbcType=INTEGER},
+      </if>
+      <if test="hetongnei != null">
+        #{hetongnei,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hr_pojo.Hetong">
+    update hetong
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="startdate != null">
+        startDate = #{startdate,jdbcType=DATE},
+      </if>
+      <if test="enddate != null">
+        endDate = #{enddate,jdbcType=DATE},
+      </if>
+      <if test="zhiwu != null">
+        zhiwu = #{zhiwu,jdbcType=INTEGER},
+      </if>
+      <if test="hetongnei != null">
+        hetongnei = #{hetongnei,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hr_pojo.Hetong">
+    update hetong
+    set userId = #{userid,jdbcType=INTEGER},
+      startDate = #{startdate,jdbcType=DATE},
+      endDate = #{enddate,jdbcType=DATE},
+      zhiwu = #{zhiwu,jdbcType=INTEGER},
+      hetongnei = #{hetongnei,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hr_pojo.Hetong">
+    update hetong
+    set userId = #{userid,jdbcType=INTEGER},
+      startDate = #{startdate,jdbcType=DATE},
+      endDate = #{enddate,jdbcType=DATE},
+      zhiwu = #{zhiwu,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

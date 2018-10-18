@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my_mapper.KaoQingMapper">
+  <update id="updateByPrimaryKey" parameterType="KaoQing">
+    update kaoqing
+    set userId = #{userid,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectKaoQingByPage" resultType="KaoQing" parameterType="KaoQing">
+select k.id id,k.userId userid,c.type type, c.price price from kaoqing k,checks c where k.type = c.id ORDER BY  ${orderByColName} ${orderMethod} limit #{start},#{row}
+	</select>
+	
+		<select id="selectJf" resultType="KaoQing"><!-- 基本工资及奖罚金额 -->
+	  select k.id id,k.userId userid,c.type type, c.price price from kaoqing k,checks c where k.type = c.id and k.userId=#{userid}
+	</select><!-- 删除 -->
+	
+	<select id="selectCount" resultType="int">
+		select count(*) from kaoqing  
+	</select>
+	<delete id="deleteKaoQingByPage" parameterType="int">
+	   delete  from kaoqing where id = #{id}
+	</delete>
+	<insert id="addKaoQingByPage"  parameterType="KaoQing">
+	   insert into kaoqing(userId,type) values (#{userid},#{type})
+	</insert>
+	<update id="updateKaoQingByPage" parameterType="KaoQing">
+	    update kaoqing set userId=#{userid},type = #{type} where id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr_mapper.userAdminMapper1">
+  <resultMap id="BaseResultMap" type="com.hr_pojo.userAdmin">
+    <id column="u_id" jdbcType="INTEGER" property="uId" />
+    <result column="u_shen" jdbcType="VARCHAR" property="uShen" />
+    <result column="u_price" jdbcType="REAL" property="uPrice" />
+    <result column="u_eId" jdbcType="INTEGER" property="uEid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    u_id, u_shen, u_price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from userAdmin
+    where u_id = #{uId,jdbcType=INTEGER}
+  </select>
+    
+  <!-- 查询所有记录 -->
+   <select id="selectRecruit" parameterType="com.hr_pojo.userAdmin" resultType="userAdmin">
+    select u_id uId, u_shen uShen, u_price uPrice
+    from userAdmin
+  </select>
+  <!-- end -->
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from userAdmin
+    where u_id = #{uId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hr_pojo.userAdmin">
+    insert into userAdmin (u_id, u_shen, u_price,
+      u_eId)
+    values (#{uId,jdbcType=INTEGER}, #{uShen,jdbcType=VARCHAR}, #{uPrice,jdbcType=REAL}, 
+      #{uEid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hr_pojo.userAdmin">
+    insert into userAdmin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="uShen != null">
+        u_shen,
+      </if>
+      <if test="uPrice != null">
+        u_price,
+      </if>
+      <if test="uEid != null">
+        u_eId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="uShen != null">
+        #{uShen,jdbcType=VARCHAR},
+      </if>
+      <if test="uPrice != null">
+        #{uPrice,jdbcType=REAL},
+      </if>
+      <if test="uEid != null">
+        #{uEid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hr_pojo.userAdmin">
+    update userAdmin
+    <set>
+      <if test="uShen != null">
+        u_shen = #{uShen,jdbcType=VARCHAR},
+      </if>
+      <if test="uPrice != null">
+        u_price = #{uPrice,jdbcType=REAL},
+      </if>
+      <if test="uEid != null">
+        u_eId = #{uEid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where u_id = #{uId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hr_pojo.userAdmin">
+    update userAdmin
+    set u_shen = #{uShen,jdbcType=VARCHAR},
+      u_price = #{uPrice,jdbcType=REAL},
+      u_eId = #{uEid,jdbcType=INTEGER}
+    where u_id = #{uId,jdbcType=INTEGER}
+  </update>
+</mapper>
